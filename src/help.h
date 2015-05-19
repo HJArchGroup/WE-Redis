@@ -348,12 +348,12 @@ struct commandHelp {
     "key",
     "Lock the given mutex",
     12,
-    "3.0.1" },
+    "3.0.1e" },
     { "LOCKSTATUS",
     "key",
     "Get the status of the given mutex",
     12,
-    "3.0.1" },
+    "3.0.1e" },
     // End - Feng Xie
     { "LPOP",
     "key",
@@ -720,7 +720,7 @@ struct commandHelp {
     "key",
     "Lock the given mutex, only if the mutex is currently unlocked",
     12,
-    "3.0.1" },
+    "3.0.1e" },
     // End - Feng Xie
     { "TTL",
     "key",
@@ -737,7 +737,7 @@ struct commandHelp {
     "key",
     "Unlock the given mutex, if the mutex is currently owned by the calling client",
     12,
-    "3.0.1" },
+    "3.0.1e" },
     // End - Feng Xie
     { "UNSUBSCRIBE",
     "[channel [channel ...]]",

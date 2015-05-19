@@ -10,17 +10,18 @@ we hope the deployment of WE-Redis will facilitate your design and development.
 Currently, WE-Redis relies on Redis 3.0.1, and WE-Redis can be built
 in the same way as Redis.
 
-The latest version of WE-Redis is 3.0.1we.
+The latest version of WE-Redis is 3.0.1e.
 
 What exactly are the enhancements?
 ----------------------------------
 
 1. Server-Side Distributed Lock
 
-This enhancement provides 2 extra Redis commands, namely:
+This enhancement provides 3 extra Redis commands, namely:
 
-    TRYLOCK mutex : Lock the given mutex, only if the mutex is currently unlocked.
-    UNLOCK  mutex : Unlock the given mutex, if the mutex is currently owned by the calling client.
+    TRYLOCK    mutex : Lock the given mutex, only if the mutex is currently unlocked.
+    UNLOCK     mutex : Unlock the given mutex, if the mutex is currently owned by the calling client.
+    LOCKSTATUS mutex : Get the status of the given mutex.
 
 ------------------------------------------------------------------------------
 
