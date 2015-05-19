@@ -17,15 +17,10 @@ What exactly are the enhancements?
 
 1. Server-Side Distributed Lock
 
-This enhancement provides 3 extra Redis commands, namely:
+This enhancement provides 2 extra Redis commands, namely:
 
-    LOCK key,
-    TRYLOCK key, and
-    UNLOCK key.
-
-To show the further information on these commands, in a Redis or telnet client connecting to WE-Redis, you can type:
-
-    help @lock
+    TRYLOCK mutex : Lock the given mutex, only if the mutex is currently unlocked.
+    UNLOCK  mutex : Unlock the given mutex, if the mutex is currently owned by the calling client.
 
 ------------------------------------------------------------------------------
 
