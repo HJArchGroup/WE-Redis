@@ -1,9 +1,8 @@
-# we-redis
 Widely-Enhanced Redis
-------------------------------------------------------------------------------
+---------------------
 
 What is WE-Redis?
--------------------------------------------
+-----------------
 WE-Redis is a variant of Redis with non-official enhancements, to meet
 some special requirements in Redis-relative systems. And therefore
 we hope the deployment of WE-Redis will facilitate your design and development.
@@ -14,16 +13,19 @@ in the same way as Redis.
 The latest version of WE-Redis is 3.0.1we.
 
 What exactly are the enhancements?
--------------------------------------------
+----------------------------------
 
 1. Server-Side Distributed Lock
 
-This enhancement provides 3 extra Redis commands, namely
-    LOCK, TRYLOCK, and UNLOCK.
+This enhancement provides 3 extra Redis commands, namely:
 
-In a Redis or telnet client connecting to WE-Redis, you can also type
-    ¡°help @lock¡±
-to show the further information on these commands.
+    LOCK key,
+    TRYLOCK key, and
+    UNLOCK key.
+
+To show the further information on these commands, in a Redis or telnet client connecting to WE-Redis, you can type:
+
+    help @lock
 
 ------------------------------------------------------------------------------
 
@@ -60,7 +62,7 @@ After building Redis is a good idea to test it, using:
     % make test
 
 Fixing build problems with dependencies or cached build options
-¡ª--------
+Â¡Âª--------
 Redis has some dependencies which are included into the "deps" directory.
 "make" does not rebuild dependencies automatically, even if something in the
 source code of dependencies is changes.
