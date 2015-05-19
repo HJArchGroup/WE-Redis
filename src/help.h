@@ -15,7 +15,10 @@ static char *commandGroups[] = {
     "connection",
     "server",
     "scripting",
-    "hyperloglog"
+    "hyperloglog",
+    // Feng Xie 2015-05-18
+    "lock"
+    // End - Feng Xie
 };
 
 struct commandHelp {
@@ -340,6 +343,18 @@ struct commandHelp {
     "Get the length of a list",
     2,
     "1.0.0" },
+    // Feng Xie 2015-05-18
+    { "LOCK",
+    "key",
+    "Lock the given mutex",
+    12,
+    "3.0.1" },
+    { "LOCKSTATUS",
+    "key",
+    "Get the status of the given mutex",
+    12,
+    "3.0.1" },
+    // End - Feng Xie
     { "LPOP",
     "key",
     "Remove and get the first element in a list",
@@ -700,6 +715,13 @@ struct commandHelp {
     "Return the current server time",
     9,
     "2.6.0" },
+    // Feng Xie 2015-05-18
+    { "TRYLOCK",
+    "key",
+    "Lock the given mutex, only if the mutex is currently unlocked",
+    12,
+    "3.0.1" },
+    // End - Feng Xie
     { "TTL",
     "key",
     "Get the time to live for a key",
@@ -710,6 +732,13 @@ struct commandHelp {
     "Determine the type stored at key",
     0,
     "1.0.0" },
+    // Feng Xie 2015-05-18
+    { "UNLOCK",
+    "key",
+    "Unlock the given mutex, if the mutex is currently owned by the calling client",
+    12,
+    "3.0.1" },
+    // End - Feng Xie
     { "UNSUBSCRIBE",
     "[channel [channel ...]]",
     "Stop listening for messages posted to the given channels",

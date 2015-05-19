@@ -182,6 +182,9 @@ typedef long long mstime_t; /* millisecond time type. */
 #define REDIS_SET 2
 #define REDIS_ZSET 3
 #define REDIS_HASH 4
+// Feng Xie 2015-05-18
+#define REDIS_LOCK 5
+// End - Feng Xie
 
 /* Objects encoding. Some kind of objects like Strings and Hashes can be
  * internally represented in multiple ways. The 'encoding' field of the object
@@ -567,6 +570,9 @@ struct saveparam {
 struct sharedObjectsStruct {
     robj *crlf, *ok, *err, *emptybulk, *czero, *cone, *cnegone, *pong, *space,
     *colon, *nullbulk, *nullmultibulk, *queued,
+    // Feng Xie 2015-05-18
+    *locked, *unlocked, *lockedstr, *unlockedstr, *nolockerr,
+    // End - Feng Xie
     *emptymultibulk, *wrongtypeerr, *nokeyerr, *syntaxerr, *sameobjecterr,
     *outofrangeerr, *noscripterr, *loadingerr, *slowscripterr, *bgsaveerr,
     *masterdownerr, *roslaveerr, *execaborterr, *noautherr, *noreplicaserr,
@@ -1532,6 +1538,12 @@ void pfcountCommand(redisClient *c);
 void pfmergeCommand(redisClient *c);
 void pfdebugCommand(redisClient *c);
 void latencyCommand(redisClient *c);
+// Feng Xie 2015-05-18
+void lockCommand(redisClient *c);
+void trylockCommand(redisClient *c);
+void unlockCommand(redisClient *c);
+void lockStatusCommand(redisClient *c);
+// End - Feng Xie
 
 #if defined(__GNUC__)
 void *calloc(size_t count, size_t size) __attribute__ ((deprecated));

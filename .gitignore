@@ -1,28 +1,58 @@
-.*.swp
+# Object files
 *.o
-*.log
-dump.rdb
-redis-benchmark
-redis-check-aof
-redis-check-dump
-redis-cli
-redis-sentinel
-redis-server
-doc-tools
-release
-misc/*
+*.ko
+*.obj
+*.elf
+
+# Precompiled Headers
+*.gch
+*.pch
 src/release.h
-appendonly.aof
-SHORT_TERM_TODO
-release.h
 src/transfer.sh
-src/configs
-redis.ds
-src/redis.conf
-src/nodes.conf
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+src/redis-benchmark
+src/redis-check-aof
+src/redis-check-dump
+src/redis-cli
+src/redis-sentinel
+src/redis-server
 deps/lua/src/lua
 deps/lua/src/luac
 deps/lua/src/liblua.a
+
+# Debug files
+*.dSYM/
+
+# Temporary files
+.*.swp
+*.log
+*.rdb
+
+# Build files
 .make-*
 .prerequisites
-*.dSYM
+
+# Configure files
+src/redis.conf
+src/nodes.conf
+src/configs
+appendonly.aof

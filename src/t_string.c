@@ -75,6 +75,16 @@ void setGenericCommand(redisClient *c, int flags, robj *key, robj *val, robj *ex
         if (unit == UNIT_SECONDS) milliseconds *= 1000;
     }
 
+    // Feng Xie 2015-05-18
+    robj *o = lookupKey(c->db,c->argv[1]);
+    if (o != NULL) {
+        if (o->type == REDIS_LOCK) {
+            addReply(c,shared.wrongtypeerr);
+            return;
+        }
+    }
+    // End - Feng Xie
+
     if ((flags & REDIS_SET_NX && lookupKeyWrite(c->db,key) != NULL) ||
         (flags & REDIS_SET_XX && lookupKeyWrite(c->db,key) == NULL))
     {
