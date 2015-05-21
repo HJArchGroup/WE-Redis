@@ -1325,12 +1325,11 @@ void createSharedObjects(void) {
     shared.emptymultibulk = createObject(REDIS_STRING,sdsnew("*0\r\n"));
     shared.pong = createObject(REDIS_STRING,sdsnew("+PONG\r\n"));
     shared.queued = createObject(REDIS_STRING,sdsnew("+QUEUED\r\n"));
-    // Feng Xie 2015-05-18
-    shared.locked = createObject(REDIS_LOCK,sdsnew("locked"));
-    shared.unlocked = createObject(REDIS_LOCK,sdsnew("unlocked"));
-    shared.lockedstr = createObject(REDIS_STRING,sdsnew("+LOCKED\r\n"));
-    shared.unlockedstr = createObject(REDIS_STRING,sdsnew("+UNLOCKED\r\n"));
+    // Feng Xie 2015-05-20
+    shared.locked = createObject(REDIS_STRING,sdsnew("+LOCKED\r\n"));
+    shared.unlocked = createObject(REDIS_STRING,sdsnew("+UNLOCKED\r\n"));
     shared.nolockerr = createObject(REDIS_STRING,sdsnew("-ERR no such lock\r\n"));
+    shared.reentryerr = createObject(REDIS_STRING,sdsnew("-ERR lock re-entry\r\n"));
     // End - Feng Xie
     shared.emptyscan = createObject(REDIS_STRING,sdsnew("*2\r\n$1\r\n0\r\n*0\r\n"));
     shared.wrongtypeerr = createObject(REDIS_STRING,sdsnew(

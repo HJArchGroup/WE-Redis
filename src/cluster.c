@@ -845,7 +845,7 @@ int clusterAddNode(clusterNode *node) {
     return (retval == DICT_OK) ? REDIS_OK : REDIS_ERR;
 }
 
-/* Remove a node from the cluster. The functio performs the high level
+/* Remove a node from the cluster. The function performs the high level
  * cleanup, calling freeClusterNode() for the low level cleanup.
  * Here we do the following:
  *

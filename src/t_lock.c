@@ -34,119 +34,116 @@
  * Lock Commands
  *----------------------------------------------------------------------------*/
 
-void setLockValue(redisClient *c, int value) {
-    if (value == 1) {
-        setKey(c->db,c->argv[1],shared.locked);
-    }
-    else if (value == 0) {
-        setKey(c->db,c->argv[1],shared.unlocked);
-    }
-    addReply(c,shared.ok);
-    //notifyKeyspaceEvent(REDIS_NOTIFY_STRING,"set",c->argv[1],c->db->id);
-    //server.dirty++;
-}
-
 int isActiveClient(uint64_t id) {
     listNode *p = server.clients->head;
     while (p != NULL) {
         if (id == ((redisClient *)(p->value))->id) {
-            return 1;
+            return REDIS_OK;
         }
         p = p->next;
     }
-    return 0;
+    return REDIS_ERR;
 }
 
 void lockCommand(redisClient *c) {
-    robj *o = lookupKey(c->db,c->argv[1]);
-    if (o == NULL) {
-        // The mutex does not exist, then initiate it.
-        setLockValue(c,1);
-    }
-    else {
-        if (o->type == REDIS_LOCK) {
-            if (o == shared.unlocked) {
-                // The mutex is unlocked.
-                setLockValue(c,1);
-            }
-            else {
-                // The mutex is locked.
-                addReply(c,shared.err);
-            }
-        }
-        else {
-            // The key is not a mutex.
-            addReply(c,shared.wrongtypeerr);
-        }
+    trylockCommand(c);
+}
+
+void broadcast(robj *o) {
+    listNode *p = server.clients->head;
+    while (p != NULL) {
+        addReply((redisClient *)(p->value),o);
+        p = p->next;
     }
 }
 
 void trylockCommand(redisClient *c) {
     robj *o = lookupKey(c->db,c->argv[1]);
-    if (o == NULL) {
-        // The mutex does not exist, then initiate it.
-        setLockValue(c,1);
+
+    if (o == NULL) { // The mutex does not exist, then initiate it.
+        o = createObject(REDIS_LOCK,c);
+        setKey(c->db,c->argv[1],o);
+        addReply(c,shared.ok);
+        return;
     }
-    else {
-        if (o->type == REDIS_LOCK) {
-            if (o == shared.unlocked) {
-                // The mutex is unlocked.
-                setLockValue(c,1);
-            }
-            else {
-                // The mutex is locked.
-                addReply(c,shared.err);
-            }
-        }
-        else {
-            // The key is not a mutex.
-            addReply(c,shared.wrongtypeerr);
-        }
+
+    if (o->type != REDIS_LOCK) { // The key is not a mutex.
+        addReply(c,shared.wrongtypeerr);
+        return;
     }
+
+    if (o->ptr == NULL) { // The mutex is unlocked.
+        o->ptr = c;
+        addReply(c,shared.ok);
+        return;
+    }
+
+    if (((redisClient *)(o->ptr))->id == c->id) {
+        addReply(c,shared.reentryerr);
+        return;
+    }
+
+    // The mutex had been locked by an active client already.
+    if (isActiveClient(((redisClient *)(o->ptr))->id) == REDIS_OK) {
+        addReply(c,shared.err);
+        return;
+    }
+
+    o->ptr = c;
+    addReply(c,shared.ok);
 }
 
 void unlockCommand(redisClient *c) {
     robj *o = lookupKey(c->db,c->argv[1]);
-    if (o == NULL) {
-        // The mutex does not exist.
+
+    if (o == NULL) { // The mutex does not exist.
         addReply(c,shared.nolockerr);
+        return;
     }
-    else {
-        if (o->type == REDIS_LOCK) {
-            if (o == shared.unlocked) {
-                // The mutex is unlocked.
-                addReply(c,shared.err);
-            }
-            else {
-                // Unlock the mutex straightly.
-                setLockValue(c,0);
-            }
-        }
-        else {
-            // The key is not a mutex.
-            addReply(c,shared.wrongtypeerr);
-        }
+
+    if (o->type != REDIS_LOCK) { // The key is not a mutex.
+        addReply(c,shared.wrongtypeerr);
+        return;
     }
+
+    if (o->ptr == NULL) { // The mutex is unlocked.
+        addReply(c,shared.err);
+        return;
+    }
+
+    // The mutex had been locked by another client before.
+    if (((redisClient *)(o->ptr))->id != c->id) {
+        addReply(c,shared.err);
+        return;
+    }
+
+    o->ptr = NULL;
+    addReply(c,shared.ok);
 }
 
 void lockStatusCommand(redisClient *c) {
     robj *o = lookupKey(c->db,c->argv[1]);
-    if (o == NULL) {
-        // The mutex does not exist.
+
+    if (o == NULL) { // The mutex does not exist.
         addReply(c,shared.nolockerr);
+        return;
+    }
+
+    if (o->type != REDIS_LOCK) { // The key is not a mutex.
+        addReply(c,shared.wrongtypeerr);
+        return;
+    }
+
+    if (o->ptr == NULL) {
+        addReply(c,shared.unlocked);
+        return;
+    }
+
+    if (isActiveClient(((redisClient *)(o->ptr))->id) == REDIS_OK) {
+        addReply(c,shared.locked);
     }
     else {
-        if (o->type == REDIS_LOCK) {
-            if (o == shared.locked) {
-                addReply(c,shared.lockedstr);
-            }
-            else {
-                addReply(c,shared.unlockedstr);
-            }
-        }
-        else {
-            // The key is not a mutex.
-            addReply(c,shared.wrongtypeerr);
-        }
+        o->ptr = NULL;
+        addReply(c,shared.unlocked);
     }
 }

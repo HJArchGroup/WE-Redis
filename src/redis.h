@@ -570,8 +570,8 @@ struct saveparam {
 struct sharedObjectsStruct {
     robj *crlf, *ok, *err, *emptybulk, *czero, *cone, *cnegone, *pong, *space,
     *colon, *nullbulk, *nullmultibulk, *queued,
-    // Feng Xie 2015-05-18
-    *locked, *unlocked, *lockedstr, *unlockedstr, *nolockerr,
+    // Feng Xie 2015-05-20
+    *locked, *unlocked, *nolockerr, *reentryerr,
     // End - Feng Xie
     *emptymultibulk, *wrongtypeerr, *nokeyerr, *syntaxerr, *sameobjecterr,
     *outofrangeerr, *noscripterr, *loadingerr, *slowscripterr, *bgsaveerr,
@@ -1119,6 +1119,9 @@ void freeListObject(robj *o);
 void freeSetObject(robj *o);
 void freeZsetObject(robj *o);
 void freeHashObject(robj *o);
+// Feng Xie 2015-05-20
+void freeLockObject(robj *o);
+// End - Feng Xie
 robj *createObject(int type, void *ptr);
 robj *createStringObject(char *ptr, size_t len);
 robj *createRawStringObject(char *ptr, size_t len);

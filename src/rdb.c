@@ -460,6 +460,10 @@ int rdbSaveObjectType(rio *rdb, robj *o) {
             return rdbSaveType(rdb,REDIS_RDB_TYPE_HASH);
         else
             redisPanic("Unknown hash encoding");
+    case REDIS_LOCK:
+        // Feng Xie 2015-05-20
+        return 0;
+        // End - Feng Xie
     default:
         redisPanic("Unknown object type");
     }
@@ -588,7 +592,10 @@ int rdbSaveObject(rio *rdb, robj *o) {
         } else {
             redisPanic("Unknown hash encoding");
         }
-
+    // Feng Xie 2015-05-20
+    } else if (o->type == REDIS_LOCK) {
+        ;
+    // End - Feng Xie
     } else {
         redisPanic("Unknown object type");
     }

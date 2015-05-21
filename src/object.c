@@ -297,6 +297,12 @@ void freeHashObject(robj *o) {
     }
 }
 
+// Feng Xie 2015-05-20
+void freeLockObject(robj *o) {
+    o->ptr = NULL;
+}
+// End - Feng Xie
+
 void incrRefCount(robj *o) {
     o->refcount++;
 }
@@ -310,6 +316,9 @@ void decrRefCount(robj *o) {
         case REDIS_SET: freeSetObject(o); break;
         case REDIS_ZSET: freeZsetObject(o); break;
         case REDIS_HASH: freeHashObject(o); break;
+        // Feng Xie 2015-05-20
+        case REDIS_LOCK: break;
+        // End - Feng Xie
         default: redisPanic("Unknown object type"); break;
         }
         zfree(o);
