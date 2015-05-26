@@ -15,13 +15,37 @@ The latest version of WE-Redis is 3.0.1e.
 What exactly are the enhancements?
 ----------------------------------
 
-1. Server-Side Distributed Lock
+- Server-Side Distributed Lock
 
 This enhancement provides 3 extra Redis commands, namely:
 
-    TRYLOCK    mutex : Lock the given mutex, only if the mutex is currently unlocked.
-    UNLOCK     mutex : Unlock the given mutex, if the mutex is currently owned by the calling client.
-    LOCKSTATUS mutex : Get the status of the given mutex.
+    TRYLOCK    mutex : Lock the mutex, only if it is currently unlocked.
+    UNLOCK     mutex : Unlock the mutex, if it is currently owned by the calling client.
+    LOCKSTATUS mutex : Get the status of the mutex.
+
+- System Information
+
+This enhancement provides 1 extra Redis command, namely:
+
+	INFO sysinfo
+
+or
+
+	INFO all
+
+The response consists of the following information:
+
+	up_time		: Seconds since boot
+	load_1_min	: 1 minute load averages
+	load_5_min	: 5 minute load averages
+	load_15_min	: 15 minute load averages
+	ram_total	: Total usable main memory size
+	ram_free	: Available memory size
+	ram_shared	: Amount of shared memory
+	ram_buffer	: Memory used by buffers
+	swap_total	: Total swap space size
+	swap_free	: Swap space still available
+	processes	: Number of current processes
 
 ------------------------------------------------------------------------------
 
