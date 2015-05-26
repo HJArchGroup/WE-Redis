@@ -53,6 +53,10 @@
 #include <sys/utsname.h>
 #include <locale.h>
 
+// Feng Xie 2015-05-26
+#include <sys/sysinfo.h>
+// End - Feng Xie
+
 /* Our shared "common" objects */
 
 struct sharedObjectsStruct shared;
@@ -3041,6 +3045,41 @@ sds genRedisInfoString(char *section) {
             }
         }
     }
+
+    // Feng Xie 2015-05-26
+    /* SysInfo */
+    if (allsections || !strcasecmp(section,"sysinfo")) {
+        if (sections++) info = sdscat(info,"\r\n");
+        struct sysinfo s_info;
+        if (!sysinfo(&s_info)) {
+            info = sdscatprintf(info,
+            "# SysInfo\r\n"
+            "up_time:%ld\r\n"
+            "load_1_min:%.2f\r\n"
+            "load_5_min:%.2f\r\n"
+            "load_15_min:%.2f\r\n"
+            "ram_total:%lu\r\n"
+            "ram_free:%lu\r\n"
+            "ram_shared:%lu\r\n"
+            "ram_buffer:%lu\r\n"
+            "swap_total:%lu\r\n"
+            "swap_free:%lu\r\n"
+            "processes:%u\r\n",
+            s_info.uptime,
+            s_info.loads[0] / 65536.0,
+            s_info.loads[1] / 65536.0,
+            s_info.loads[2] / 65536.0,
+            s_info.totalram,
+            s_info.freeram,
+            s_info.sharedram,
+            s_info.bufferram,
+            s_info.totalswap,
+            s_info.freeswap,
+            s_info.procs);
+        }
+    }
+    // End - Feng Xie
+
     return info;
 }
 
