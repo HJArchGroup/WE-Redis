@@ -23,29 +23,15 @@ This enhancement provides 3 extra Redis commands, namely:
     UNLOCK     mutex : Unlock the mutex, if it is currently owned by the calling client.
     LOCKSTATUS mutex : Get the status of the mutex.
 
+Please read [doc/lock.md](doc/lock.md) to get more details.
+
 - System Information
 
 This enhancement provides 1 extra Redis command, namely:
 
-	INFO sysinfo
+	INFO sysinfo | INFO all
 
-or
-
-	INFO all
-
-The response consists of the following information:
-
-	up_time		: Seconds since boot
-	load_1_min	: 1 minute load averages
-	load_5_min	: 5 minute load averages
-	load_15_min	: 15 minute load averages
-	ram_total	: Total usable main memory size
-	ram_free	: Available memory size
-	ram_shared	: Amount of shared memory
-	ram_buffer	: Memory used by buffers
-	swap_total	: Total swap space size
-	swap_free	: Swap space still available
-	processes	: Number of current processes
+Please read [doc/sysinfo.md](doc/sysinfo.md) to get more details.
 
 ------------------------------------------------------------------------------
 
