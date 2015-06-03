@@ -15,7 +15,7 @@ The latest version of WE-Redis is 3.0.1e.
 What exactly are the enhancements?
 ----------------------------------
 
-- Server-Side Distributed Lock
+(1) Server-Side Distributed Lock
 
 This enhancement provides 3 extra Redis commands, namely:
 
@@ -25,13 +25,19 @@ This enhancement provides 3 extra Redis commands, namely:
 
 Please read [doc/lock.md](doc/lock.md) to get more details.
 
-- System Information
+
+
+(2) System Information
 
 This enhancement provides 1 extra Redis command, namely:
 
 	INFO sysinfo | INFO all
 
 Please read [doc/sysinfo.md](doc/sysinfo.md) to get more details.
+
+(3) Redis (Cluster) Monitor
+
+Please read [doc/monitor.md](doc/monitor.md) to get more details.
 
 ------------------------------------------------------------------------------
 
